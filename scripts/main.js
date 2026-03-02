@@ -2,6 +2,7 @@ const input = document.getElementById('text-input');
 const ecSelect = document.getElementById('ec-level');
 const styleSelect = document.getElementById('qr-style');
 const output = document.getElementById('qr-output');
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
 let debounceTimer;
 
@@ -21,17 +22,24 @@ function render() {
     const count = qr.getModuleCount();
     const cellSize = Math.max(4, Math.floor(280 / count));
     const margin = 4;
+    const renderScale = 3;
 
     const canvas = document.createElement('canvas');
     const size = count * cellSize + margin * 2 * cellSize;
-    canvas.width = size;
-    canvas.height = size;
+    canvas.width = size * renderScale;
+    canvas.height = size * renderScale;
 
     const ctx = canvas.getContext('2d');
     const style = styleSelect.value;
-    ctx.fillStyle = '#fafafa';
+    const themeStyles = getComputedStyle(document.documentElement);
+    const qrBackground = themeStyles.getPropertyValue('--qr-bg').trim();
+    const qrForeground = themeStyles.getPropertyValue('--qr-fg').trim();
+
+    ctx.scale(renderScale, renderScale);
+
+    ctx.fillStyle = qrBackground;
     ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = '#18181b';
+    ctx.fillStyle = qrForeground;
 
     const pad = cellSize * 0.1;
     const r2 = cellSize * 0.35;
@@ -83,3 +91,4 @@ function onInput() {
 input.addEventListener('input', onInput);
 ecSelect.addEventListener('change', render);
 styleSelect.addEventListener('change', render);
+prefersDarkScheme.addEventListener('change', render);

@@ -7,6 +7,53 @@
     <title>QR Code Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            color-scheme: dark light;
+            --bg-body: #0e0e11;
+            --text-body: #e4e4e7;
+            --bg-card: #18181b;
+            --border-card: #27272a;
+            --text-title: #fafafa;
+            --text-muted: #71717a;
+            --text-label: #a1a1aa;
+            --bg-input: #09090b;
+            --border-input: #27272a;
+            --text-input: #fafafa;
+            --text-placeholder: #52525b;
+            --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2371717a' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6l3.5 4 3.5-4z'/%3E%3C/svg%3E");
+            --select-option-bg: #18181b;
+            --select-option-text: #fafafa;
+            --divider: #27272a;
+            --empty-state: #3f3f46;
+            --focus-ring: rgba(59, 130, 246, .15);
+            --qr-bg: #fafafa;
+            --qr-fg: #18181b;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-body: #f4f4f5;
+                --text-body: #18181b;
+                --bg-card: #ffffff;
+                --border-card: #e4e4e7;
+                --text-title: #18181b;
+                --text-muted: #52525b;
+                --text-label: #52525b;
+                --bg-input: #ffffff;
+                --border-input: #d4d4d8;
+                --text-input: #18181b;
+                --text-placeholder: #a1a1aa;
+                --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2352525b' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6l3.5 4 3.5-4z'/%3E%3C/svg%3E");
+                --select-option-bg: #ffffff;
+                --select-option-text: #18181b;
+                --divider: #e4e4e7;
+                --empty-state: #a1a1aa;
+                --focus-ring: rgba(59, 130, 246, .22);
+                --qr-bg: #ffffff;
+                --qr-fg: #18181b;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,8 +66,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #0e0e11;
-            color: #e4e4e7;
+            background: var(--bg-body);
+            color: var(--text-body);
         }
 
         .container {
@@ -30,8 +77,8 @@
         }
 
         .card {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
             border-radius: 16px;
             padding: 2rem;
         }
@@ -45,12 +92,12 @@
             font-size: 1.15rem;
             font-weight: 600;
             letter-spacing: -.02em;
-            color: #fafafa;
+            color: var(--text-title);
         }
 
         .header p {
             font-size: .8rem;
-            color: #71717a;
+            color: var(--text-muted);
             margin-top: .35rem;
         }
 
@@ -58,7 +105,7 @@
             display: block;
             font-size: .75rem;
             font-weight: 500;
-            color: #a1a1aa;
+            color: var(--text-label);
             margin-bottom: .4rem;
             text-transform: uppercase;
             letter-spacing: .04em;
@@ -68,38 +115,39 @@
         select {
             width: 100%;
             padding: .65rem .85rem;
-            background: #09090b;
-            border: 1px solid #27272a;
+            background: var(--bg-input);
+            border: 1px solid var(--border-input);
             border-radius: 10px;
             font-family: inherit;
             font-size: .9rem;
-            color: #fafafa;
+            color: var(--text-input);
             outline: none;
             transition: border-color .2s, box-shadow .2s;
             -webkit-appearance: none;
+            appearance: none;
         }
 
         input::placeholder {
-            color: #52525b;
+            color: var(--text-placeholder);
         }
 
         input:focus,
         select:focus {
             border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+            box-shadow: 0 0 0 3px var(--focus-ring);
         }
 
         select {
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2371717a' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6l3.5 4 3.5-4z'/%3E%3C/svg%3E");
+            background-image: var(--select-arrow);
             background-repeat: no-repeat;
             background-position: right .75rem center;
             padding-right: 2.25rem;
         }
 
         select option {
-            background: #18181b;
-            color: #fafafa;
+            background: var(--select-option-bg);
+            color: var(--select-option-text);
         }
 
         .field {
@@ -118,7 +166,7 @@
 
         .divider {
             height: 1px;
-            background: #27272a;
+            background: var(--divider);
             margin: 1.5rem 0;
         }
 
@@ -137,7 +185,7 @@
         .empty-state {
             text-align: center;
             padding: 2rem 0;
-            color: #3f3f46;
+            color: var(--empty-state);
             font-size: .8rem;
         }
     </style>
@@ -160,7 +208,7 @@
                 <div class="field">
                     <label for="ec-level">Error Correction</label>
                     <select id="ec-level">
-                        <option value="L">Low/option>
+                        <option value="L">Low</option>
                         <option value="M" selected>Medium</option>
                         <option value="Q">Quartile</option>
                         <option value="H">High</option>
